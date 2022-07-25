@@ -83,3 +83,90 @@ scale_fill_lwi <- function (stata = FALSE, ...)
 {
   discrete_scale("fill", "lwi", lwi_pal(), ...)
 }
+
+
+lwi_theme <- function(base_size = 10, base_family = "sans",
+                      horizontal = TRUE, dkpanel = FALSE) {
+
+  bgcolors <- deframe(ggthemes::ggthemes_data[["economist"]][["bg"]])
+
+  ## From measurements
+  ## Ticks = 1 / 32 in, with margin about 1.5 / 32
+  ## Title = 3 / 32 in (6 pt)
+  ## Legend Labels = 2.5 / 32 in (5pt)
+  ## Axis Labels = 2
+  ## Axis Titles and other text ~ 2
+  ## Margins: Top / Bottom = 6 / 32, sides = 5 / 32
+  ret <-
+    theme_foundation(base_size = base_size, base_family = base_family) +
+    theme(line = element_line(colour = "black"),
+          rect = element_rect(fill = bgcolors["ebg"], colour = NA,
+                              linetype = 1),
+          text = element_text(colour = "black"),
+          ## Axis
+          axis.line = element_line(size = rel(0.8)),
+          axis.line.y = element_blank(),
+          axis.text = element_text(size = rel(1)),
+          axis.text.x = element_text(vjust = 0,
+                                     margin = margin(t = base_size,
+                                                     unit = "pt")),
+          axis.text.x.top = element_text(vjust = 0, margin = margin(b = base_size, unit = "pt")),
+          axis.text.y = element_text(hjust = 0,
+                                     margin = margin(r = base_size,
+                                                     unit = "pt")),
+          ## I cannot figure out how to get ggplot to do 2 levels of ticks
+          ## axis.ticks.margin = unit(3 / 72, "in"),
+          axis.ticks = element_line(),
+          axis.ticks.y = element_blank(),
+          axis.title = element_text(size = rel(1)),
+          axis.title.x = element_text(),
+          axis.title.y = element_text(angle = 90),
+          # axis.ticks.length = unit( -1/32, "in"),
+          axis.ticks.length = unit( -base_size * 0.5, "points"),
+          legend.background = element_rect(linetype = 0),
+          legend.spacing = unit(base_size * 1.5, "points"),
+          legend.key = element_rect(linetype = 0),
+          legend.key.size = unit(1.2, "lines"),
+          legend.key.height = NULL,
+          legend.key.width = NULL,
+          legend.text = element_text(size = rel(1.25)),
+          legend.text.align = NULL,
+          legend.title = element_text(size = rel(1),  hjust = 0),
+          legend.title.align = NULL,
+          legend.position = "top",
+          legend.direction = NULL,
+          legend.justification = "center",
+          ## legend.box = element_rect(fill = palette_economist['bgdk'],
+          ## colour=NA, linetype=0),
+          ## Economist only uses vertical lines
+          panel.background = element_rect(linetype = 0),
+          panel.border = element_blank(),
+          panel.grid.major = element_line(colour = "white", size = rel(1.75)),
+          panel.grid.minor = element_blank(),
+          panel.spacing = unit(0.25, "lines"),
+          strip.background = element_rect(fill = bgcolors["ebg"],
+                                          colour = NA, linetype = 0),
+          strip.text = element_text(size = rel(1.25)),
+          strip.text.x = element_text(),
+          strip.text.y = element_text(angle = -90),
+          plot.background = element_rect(fill = bgcolors["blue-gray"],
+                                         colour = NA),
+          plot.title = element_text(size = rel(1.5),
+                                    hjust = 0, face = "bold"),
+          plot.margin = unit(c(6, 5, 6, 5) * 2, "points"),
+          complete = TRUE)
+  if (horizontal) {
+    ret <- ret + theme(panel.grid.major.x = element_blank())
+  } else {
+    ret <- ret + theme(panel.grid.major.y = element_blank())
+  }
+  if (dkpanel == TRUE) {
+    ret <- ret + theme(panel.background =
+                         element_rect(fill =
+                                        unname(bgcolors["dark blue-gray"])),
+                       strip.background =
+                         element_rect(fill =
+                                        unname(bgcolors["dark blue-gray"])))
+  }
+  ret
+}
