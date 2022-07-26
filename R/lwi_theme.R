@@ -84,11 +84,20 @@ scale_fill_lwi <- function (stata = FALSE, ...)
   discrete_scale("fill", "lwi", lwi_pal(), ...)
 }
 
+#' Learning and Work Institute ggplot theme
+#' Uses Maven Pro Medium if installed (https://fonts.google.com/download?family=Maven%20Pro)
+#' and made available in R via the following commands:
+#' library(extrafont)
+#' font_import(paths = "Maven")
+#' loadfonts(device = "win")
 
 lwi_theme <- function(base_size = 12, base_family = "sans",
                       horizontal = TRUE, dkpanel = FALSE) {
 
+  lwiorange <- "#ee7e3b"
+  lwiblue <- "#264c59"
   lwigrey <- "#4d4d4d"
+  lwi_l_grey <- "#ededed"
 
   ## From measurements
   ## Ticks = 1 / 32 in, with margin about 1.5 / 32
@@ -102,7 +111,7 @@ lwi_theme <- function(base_size = 12, base_family = "sans",
     theme(line = element_line(colour = lwigrey),
           rect = element_rect(fill = "white", colour = NA,
                               linetype = 1),
-          text = element_text(colour = "black"),
+          text = element_text(colour = lwigrey, size = base_size),
           ## Axis
           axis.line = element_line(size = rel(1)),
           axis.text = element_text(size = rel(1)),
@@ -116,16 +125,15 @@ lwi_theme <- function(base_size = 12, base_family = "sans",
           ## I cannot figure out how to get ggplot to do 2 levels of ticks
           ## axis.ticks.margin = unit(3 / 72, "in"),
           axis.ticks = element_line(),
-          axis.title = element_text(size = rel(1)),
-          axis.title.x = element_text(margin = unit(c(3, 0, 0, 0), "mm"), face = "bold"),
-          axis.title.y = element_text(margin = unit(c(0, 3, 0, 0), "mm"), face = "bold",
-                                      angle = 90),
+          axis.title = element_text(size = rel(1.25)),
+          axis.title.x = element_text(margin = unit(c(3, 0, 0, 0), "mm")),
+          axis.title.y = element_text(margin = unit(c(0, 3, 0, 0), "mm"), angle = 90),
           # axis.ticks.length = unit( -1/32, "in"),
           axis.ticks.length = unit(base_size * 0.5, "points"),
           legend.background = element_rect(linetype = 0),
           legend.spacing = unit(base_size * 1.25, "points"),
           legend.key = element_rect(linetype = 0),
-          legend.key.size = unit(1.2, "lines"),
+          legend.key.size = unit(1.25, "lines"),
           legend.key.height = NULL,
           legend.key.width = NULL,
           legend.text = element_text(size = rel(1.25)),
@@ -138,13 +146,13 @@ lwi_theme <- function(base_size = 12, base_family = "sans",
           ## legend.box = element_rect(fill = palette_economist['bgdk'],
           ## colour=NA, linetype=0),
           ## Economist only uses vertical lines
-          panel.background = element_rect(fill = "white",
+          panel.background = element_rect(fill = lwi_l_grey,
                                           colour = lwigrey, linetype = 1),
           panel.border = element_blank(),
           panel.grid.major = element_line(colour = lwigrey, size = rel(1)),
           panel.grid.minor = element_line(colour = lwigrey, size = rel(1), linetype = "dotted"),
           panel.spacing = unit(0.25, "lines"),
-          strip.background = element_rect(fill = "white",
+          strip.background = element_rect(fill = lwi_l_grey,
                                           colour = NA, linetype = 0),
           strip.text = element_text(size = rel(1.25)),
           strip.text.x = element_text(),
@@ -152,9 +160,14 @@ lwi_theme <- function(base_size = 12, base_family = "sans",
           plot.background = element_rect(fill = "white",
                                          colour = NA),
           plot.title = element_text(size = rel(1.5),
-                                    hjust = 0, face = "bold"),
+                                    hjust = 0, face = "bold",
+                                    colour = lwiblue),
           plot.margin = unit(c(6, 5, 6, 5) * 2, "points"),
           complete = TRUE)
+
+  if(windowsFonts()["Maven Pro Medium"] == "Maven Pro Medium") {
+    ret <- ret + theme(text = element_text(family = "Maven Pro Medium"))
+  }
 
   ret
 }
