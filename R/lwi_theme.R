@@ -91,8 +91,7 @@ scale_fill_lwi <- function (stata = FALSE, ...)
 #' font_import(paths = "Maven")
 #' loadfonts(device = "win")
 
-lwi_theme <- function(base_size = 12, base_family = "sans",
-                      horizontal = TRUE, dkpanel = FALSE) {
+lwi_theme <- function(base_size = 12, base_family = "sans") {
 
   lwiorange <- "#ee7e3b"
   lwiblue <- "#264c59"
@@ -143,9 +142,7 @@ lwi_theme <- function(base_size = 12, base_family = "sans",
           legend.position = "top",
           legend.direction = NULL,
           legend.justification = "center",
-          ## legend.box = element_rect(fill = palette_economist['bgdk'],
-          ## colour=NA, linetype=0),
-          ## Economist only uses vertical lines
+
           panel.background = element_rect(fill = lwi_l_grey,
                                           colour = lwigrey, linetype = 1),
           panel.border = element_blank(),
@@ -170,4 +167,14 @@ lwi_theme <- function(base_size = 12, base_family = "sans",
   }
 
   ret
+}
+
+#' Theme with no vertical gridlines (good for bar charts)
+
+lwi_theme_novert <- function(base_size = 12, base_family = "sans") {
+
+  lwi_theme(base_size = base_size, base_family = base_family) +
+    theme(panel.grid.major.x = element_blank(),
+          panel.grid.minor.x = element_blank())
+
 }
